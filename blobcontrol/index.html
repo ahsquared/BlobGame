@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html> 
+    <head>
+        <title>Poly Dance Party</title>
+        <meta name="viewport" content="width=device-width" >
+
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <!-- <p>Connect your OSC app/device at port 3333 to send messages to this
+                page.<br /><br />Configure your OSC app/device to listen at port 3334
+                to messages I send from this page.</p>
+
+            <hr />
+
+            Received from an OSC app/device at : <div id="status"></div>
+
+            <hr />
+            <button style="position: relative; z-index: 100;" onclick="socket.send('message');console.log('button');">Send OSC message</button>
+ -->
+            <!-- <div id="accel"></div> -->
+            <div id="content">
+                <video id="VideoPlayer" controls="controls">
+                    <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"></source>
+                    <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source>
+                </video>
+                <audio id="AudioPlayer" preload="none" loop="loop" controlls>
+                    <source src="/1sec.m4a" type="audio/mpeg" />
+                    <source src="/1sec.ogg" type="audio/ogg" />
+                </audio>
+                <img id="shape" src="" />
+                <div id="info">
+                    <h1>POLY DANCE PARTY</h1>
+                    <h2>An Interactive Installation</h2>
+                    <p>First Friday / June 6th<br>
+                        119 S Gay St.<br>
+                        [BRING YOUR PHONE]</p>
+<!--                    <p id="log">log</p>-->
+                </div>
+            </div>
+        </div>
+        <div id="BeginTheParty">
+            <div class="inner">
+                <a href="#" class="btn" id="BeginThePartyBtn">Tap to<br>
+               keep dancing</a>
+            </div>
+        </div>
+        <script>
+            document.write('<script src="http://'+ location.hostname +':8081/socket.io/socket.io.js"></'+'script>');
+        </script>
+        <script src="gyro.js"></script>
+        <script src="main.js"></script>
+
+
+    </body> </html>

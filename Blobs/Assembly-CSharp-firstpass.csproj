@@ -51,8 +51,32 @@
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCPacket.cs" />
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCReceiver.cs" />
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCTransmitter.cs" />
+     <None Include="Assets\GLSL Shaders\Mandel.shader" />
+     <None Include="Assets\GLSL Shaders\Kaleidoscope.shader" />
+     <None Include="Assets\Fur\Support\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Normals.shader" />
+     <None Include="Assets\GLSL Shaders\RadialBlur.shader" />
+     <None Include="Assets\GLSL Shaders\ReliefTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\Julia.shader" />
+     <None Include="Assets\GLSL Shaders\SquareTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\PostProcessing.shader" />
+     <None Include="Assets\GLSL Shaders\Monjori.shader" />
+     <None Include="Assets\GLSL Shaders\SevenOFour.shader" />
+     <None Include="Assets\Fur\Support\FurHelpers.cginc" />
+     <None Include="Assets\GLSL Shaders\Flower.shader" />
      <None Include="Assets\iTween\ReadMe!\ReadMe!.txt" />
+     <None Include="Assets\GLSL Shaders\Multitexture.shader" />
+     <None Include="Assets\GLSL Shaders\Fur3.shader" />
+     <None Include="Assets\GLSL Shaders\Plasma.shader" />
+     <None Include="Assets\GLSL Shaders\Fly.shader" />
+     <None Include="Assets\GLSL Shaders\Pulse.shader" />
      <None Include="Assets\Scripts\Midi\Font\OFL.txt" />
+     <None Include="Assets\GLSL Shaders\Metablob.shader" />
+     <None Include="Assets\GLSL Shaders\Demo2.shader" />
+     <None Include="Assets\GLSL Shaders\demo.shader" />
+     <None Include="Assets\GLSL Shaders\Fur2.shader" />
+     <None Include="Assets\GLSL Shaders\MotionBlur.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

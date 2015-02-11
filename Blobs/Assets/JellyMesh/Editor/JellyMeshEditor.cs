@@ -344,15 +344,16 @@ public class JellyMeshEditor : Editor
 		if(m_PhysicsMode.boolValue)
 		{
 			EditorGUILayout.PropertyField(m_PhysicsMaterial2D, new GUIContent("Physics Material"));
-			m_GravityScale.floatValue = EditorGUILayout.FloatField("Gravity Scale", m_GravityScale.floatValue);
-			EditorGUILayout.PropertyField(m_CollideConnected, new GUIContent("Collide Connected"));
+			m_GravityScale.floatValue = EditorGUILayout.FloatField("Gravity Scale", m_GravityScale.floatValue);			
 		}
 		else
 		{
-			EditorGUILayout.PropertyField(m_PhysicsMaterial, new GUIContent("Physics Material"));
-			m_Drag.floatValue = EditorGUILayout.FloatField("Drag", m_Drag.floatValue);
-			m_AngularDrag.floatValue = EditorGUILayout.FloatField("Angular Drag", m_AngularDrag.floatValue);
+			EditorGUILayout.PropertyField(m_PhysicsMaterial, new GUIContent("Physics Material"));            
 		}
+
+        EditorGUILayout.PropertyField(m_CollideConnected, new GUIContent("Collide Connected"));
+        m_Drag.floatValue = EditorGUILayout.FloatField("Drag", m_Drag.floatValue);
+        m_AngularDrag.floatValue = EditorGUILayout.FloatField("Angular Drag", m_AngularDrag.floatValue);
 
 		m_Stiffness.floatValue = EditorGUILayout.FloatField("Spring Stiffness", m_Stiffness.floatValue);
 		m_DampingRatio.floatValue = EditorGUILayout.FloatField("Spring Damping", m_DampingRatio.floatValue);

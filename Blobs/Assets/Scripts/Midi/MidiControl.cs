@@ -4,9 +4,7 @@ using System.Collections;
 public class MidiControl : MonoBehaviour
 {
 	public MidiChannel channel = MidiChannel.Ch1;
-	public int noteNumber = 48;
 	public int controlNumber = 1;
-	public float velocity = 0.9f;
 	public float delay = 0.0f;
 	public float length = 0.1f;
 	public float interval = 1.0f;
@@ -28,14 +26,23 @@ public class MidiControl : MonoBehaviour
 		}
 
 	}
-	
+
+	public IEnumerator sendNote(int noteNumber, float velocity) {
+		noteNumber = Mathf.Clamp (noteNumber, 0, 127);
+
+		MidiOut.SendNoteOn(channel, noteNumber, (int) velocity);
+		Debug.Log ("note on: " + noteNumber + ", vel: " + velocity);
+		yield return new WaitForSeconds(length);
+		MidiOut.SendNoteOff(channel, noteNumber);
+		Debug.Log ("note off: " + noteNumber);
+	}
 		
 	public void sendCC(float val) {
 		float adjustedVal = Mathf.Min (1, val * ccScale);
 		currentVal = (adjustedVal * kFilteringFactor) + (currentVal * (1.0f - kFilteringFactor));
 		MidiOut.SendControlChange (channel, controlNumber, currentVal);
 		//highestVal = Mathf.Max (val, highestVal);
-		//Debug.Log ("CC Val: " + val + ", Highest: " + currentVal);
+		Debug.Log ("CC Val: " + val + ", Highest: " + currentVal);
 	}
 	
 	void Update ()

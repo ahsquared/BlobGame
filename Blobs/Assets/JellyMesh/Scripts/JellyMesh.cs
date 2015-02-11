@@ -959,6 +959,7 @@ public class JellyMesh : MonoBehaviour
 			joint.connectedAnchor = point1.Body3D.transform.localPosition - point2.Body3D.transform.localPosition;
 			joint.minDistance = 0.0f;
 			joint.maxDistance = 0.0f;
+            joint.enableCollision = m_CollideConnected;
 
 			joint.spring = m_Stiffness;
 			joint.damper = m_DampingRatio;
@@ -1743,6 +1744,8 @@ public class JellyMesh : MonoBehaviour
 					{
 						referencePoint.Body2D.mass = mass;
 						referencePoint.Body2D.gravityScale = m_GravityScale;
+                        referencePoint.Body2D.angularDrag = m_AngularDrag;
+                        referencePoint.Body2D.drag = m_Drag;
 					}
 					
 					if(referencePoint.Body3D)

@@ -1,11 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/move.cs">
     <Files>
-      <File FileName="Assets/Scripts/UnityOSCListener.cs" Line="121" Column="1" />
+      <File FileName="Assets/GLSL Shaders/Flower.shader" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UnityOSCListener.cs" Line="60" Column="1" />
       <File FileName="Assets/Scripts/UnityOSCReceiver.cs" Line="1" Column="1" />
       <File FileName="Assets/JellyMesh/Demo/Scripts/JellyMeshDemoManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/move.cs" Line="32" Column="1" />
+      <File FileName="Assets/Scripts/move.cs" Line="48" Column="2" />
+      <File FileName="Assets/GLSL Shaders/Fur.shader" Line="1" Column="1" />
+      <File FileName="Assets/GLSL Shaders/Fur2.shader" Line="1" Column="1" />
+      <File FileName="Assets/Fur/Support/Fur.shader" Line="1" Column="1" />
+      <File FileName="Assets/JellyMesh/Demo/Scripts/JellyMeshBlobBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Midi/MidiControl.cs" Line="36" Column="44" />
+      <File FileName="Assets/Scripts/Midi/Out/NoteTrigger.cs" Line="1" Column="1" />
+      <File FileName="Assets/JellyMesh/Scripts/JellyMesh.cs" Line="1" Column="1" />
+      <File FileName="Assets/Fur/Support/FurHelpers.cginc" Line="1" Column="1" />
+      <File FileName="Assets/GLSL Shaders/Normals.shader" Line="1" Column="1" />
+      <File FileName="Assets/GLSL Shaders/demo.shader" Line="1" Column="1" />
+      <File FileName="Assets/GLSL Shaders/Fur3.shader" Line="1" Column="1" />
+      <File FileName="Assets/GLSL Shaders/Demo2.shader" Line="12" Column="20" />
+      <File FileName="Assets/Scripts/RopeRenderer.cs" Line="8" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

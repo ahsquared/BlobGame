@@ -47,8 +47,32 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\JellyMesh\Editor\JellyMeshEditor.cs" />
+     <None Include="Assets\GLSL Shaders\Mandel.shader" />
+     <None Include="Assets\GLSL Shaders\Kaleidoscope.shader" />
+     <None Include="Assets\Fur\Support\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Normals.shader" />
+     <None Include="Assets\GLSL Shaders\RadialBlur.shader" />
+     <None Include="Assets\GLSL Shaders\ReliefTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\Julia.shader" />
+     <None Include="Assets\GLSL Shaders\SquareTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\PostProcessing.shader" />
+     <None Include="Assets\GLSL Shaders\Monjori.shader" />
+     <None Include="Assets\GLSL Shaders\SevenOFour.shader" />
+     <None Include="Assets\Fur\Support\FurHelpers.cginc" />
+     <None Include="Assets\GLSL Shaders\Flower.shader" />
      <None Include="Assets\iTween\ReadMe!\ReadMe!.txt" />
+     <None Include="Assets\GLSL Shaders\Multitexture.shader" />
+     <None Include="Assets\GLSL Shaders\Fur3.shader" />
+     <None Include="Assets\GLSL Shaders\Plasma.shader" />
+     <None Include="Assets\GLSL Shaders\Fly.shader" />
+     <None Include="Assets\GLSL Shaders\Pulse.shader" />
      <None Include="Assets\Scripts\Midi\Font\OFL.txt" />
+     <None Include="Assets\GLSL Shaders\Metablob.shader" />
+     <None Include="Assets\GLSL Shaders\Demo2.shader" />
+     <None Include="Assets\GLSL Shaders\demo.shader" />
+     <None Include="Assets\GLSL Shaders\Fur2.shader" />
+     <None Include="Assets\GLSL Shaders\MotionBlur.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -62,6 +86,8 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{9BFD5ABA-E925-9A5B-E793-4221D6AE4FE4}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{EC333293-24A7-E9D6-C4C4-8EDA6511BB6D}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{67D5AB1E-9A05-D159-58AE-C2F4C866E341}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>

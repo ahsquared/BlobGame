@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Fur\Support\SynchronizeLights.cs" />
      <Compile Include="Assets\JellyMesh\Demo\Scripts\CameraMove.cs" />
      <Compile Include="Assets\JellyMesh\Demo\Scripts\FireObject.cs" />
      <Compile Include="Assets\JellyMesh\Demo\Scripts\JellyMeshBlobBehaviour.cs" />
@@ -65,6 +66,8 @@
      <Compile Include="Assets\Scripts\Midi\Note\NoteIndicator.cs" />
      <Compile Include="Assets\Scripts\Midi\Note\NoteIndicatorGroup.cs" />
      <Compile Include="Assets\Scripts\Midi\Out\NoteTrigger.cs" />
+     <Compile Include="Assets\Scripts\RopeRenderer.cs" />
+     <Compile Include="Assets\Scripts\TangentSolver.cs" />
      <Compile Include="Assets\Scripts\UnityOSCListener.cs" />
      <Compile Include="Assets\Scripts\UnityOSCReceiver.cs" />
      <Compile Include="Assets\Scripts\move.cs" />
@@ -73,8 +76,35 @@
      <Compile Include="Assets\iTween\Sample\MoveSample.cs" />
      <Compile Include="Assets\iTween\Sample\RotateSample.cs" />
      <Compile Include="Assets\iTween\Sample\SampleInfo.cs" />
+     <None Include="Assets\GLSL Shaders\Mandel.shader" />
+     <None Include="Assets\GLSL Shaders\Kaleidoscope.shader" />
+     <None Include="Assets\Fur\Support\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Fur.shader" />
+     <None Include="Assets\GLSL Shaders\Normals.shader" />
+     <None Include="Assets\GLSL Shaders\RadialBlur.shader" />
+     <None Include="Assets\GLSL Shaders\ReliefTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\Julia.shader" />
+     <None Include="Assets\GLSL Shaders\SquareTunnel.shader" />
+     <None Include="Assets\GLSL Shaders\PostProcessing.shader" />
+     <None Include="Assets\GLSL Shaders\Monjori.shader" />
+     <None Include="Assets\GLSL Shaders\SevenOFour.shader" />
+     <None Include="Assets\Fur\Support\FurHelpers.cginc" />
+     <None Include="Assets\GLSL Shaders\Flower.shader" />
      <None Include="Assets\iTween\ReadMe!\ReadMe!.txt" />
+     <None Include="Assets\GLSL Shaders\Multitexture.shader" />
+     <None Include="Assets\GLSL Shaders\Fur3.shader" />
+     <None Include="Assets\GLSL Shaders\Plasma.shader" />
+     <None Include="Assets\GLSL Shaders\Fly.shader" />
+     <None Include="Assets\GLSL Shaders\Pulse.shader" />
      <None Include="Assets\Scripts\Midi\Font\OFL.txt" />
+     <None Include="Assets\GLSL Shaders\Metablob.shader" />
+     <None Include="Assets\GLSL Shaders\Demo2.shader" />
+     <None Include="Assets\GLSL Shaders\demo.shader" />
+     <None Include="Assets\GLSL Shaders\Fur2.shader" />
+     <None Include="Assets\GLSL Shaders\MotionBlur.shader" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>/Users/ahayter/Documents/Blob Game/Blobs/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

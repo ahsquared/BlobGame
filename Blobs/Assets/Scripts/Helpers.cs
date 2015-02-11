@@ -14,7 +14,7 @@ public class Helpers : MonoBehaviour {
 	}
 
 	public Vector3 locationOnXYCircle(int counter, float radius, float angle) {
-		return new Vector3(Mathf.Cos(counter * angle) * radius, Mathf.Sin(counter * angle) * radius, 0);
+		return new Vector3(Mathf.Cos(counter * angle) * radius, (Mathf.Sin(counter * angle) * radius) + 2, 0);
 	}
 
 	public Vector3 locationOnXZCircle(int counter, float radius, float angle) {

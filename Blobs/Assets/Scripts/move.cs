@@ -44,7 +44,7 @@ public class move : MonoBehaviour {
 	}
 
 	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
-		Debug.Log ("magnitude: " + collision.Collision.relativeVelocity.magnitude);
+		// Debug.Log ("magnitude: " + collision.Collision.relativeVelocity.magnitude);
 		int note = notes [Random.Range (0, 7)];
 		StartCoroutine(GetComponent<MidiControl>().sendNote (note, 100f));
 	}
@@ -75,7 +75,7 @@ public class move : MonoBehaviour {
 	public void jump(Vector3 v) {
 		JellyMesh m_JellyMesh = GetComponent<JellyMesh> ();
 		if (m_JellyMesh) {
-			Vector3 force = new Vector3(v.z, v.y, v.x);
+			Vector3 force = new Vector3(v.z, -v.y, v.x);
 			if ( ( Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs (v.z) ) > minAccelForLaunch) {
 				Vector3 torqueVector = Vector3.zero;
 				torqueVector.x = UnityEngine.Random.Range(m_MinTorqueVector.x, m_MaxTorqueVector.x);
@@ -83,12 +83,12 @@ public class move : MonoBehaviour {
 				torqueVector.z = UnityEngine.Random.Range(m_MinTorqueVector.z, m_MaxTorqueVector.z);
 				torqueVector.Normalize();
 
-				//force.Normalize();
 				force = force * scaleFactor;
+				Debug.Log (force);
 				m_JellyMesh.AddForce(force, m_CentralPointOnly);
 				m_JellyMesh.AddTorque(torqueVector * UnityEngine.Random.Range(m_MinTorqueForce, m_MaxTorqueForce), false);
+				timeSinceDisconnected = 0f;
 			}
-			//					shapeToScale.GetComponent<move>().timeSinceDisconnected = 0f;
 			//					shapeToScale.GetComponent<MidiControl>().sendCC(v.sqrMagnitude);
 			// not sure about the halo look
 			//cubeToScale.transform.GetComponentInChildren<Light>().light.range = 3 * (x + y + z);

@@ -14,7 +14,7 @@ public class UnityOSCListener : MonoBehaviour  {
 	public float radius = 4f;
 	public float angle = Mathf.PI / 6; //30f;
 	private bool init = false;
-	public int shapeCounter = 0;
+	public int shapeCounter = -1;
 
 	Helpers helpers;
 
@@ -73,6 +73,7 @@ public class UnityOSCListener : MonoBehaviour  {
 		}
 
 		if (address.Contains ("create")) {
+			shapeCounter++;
 			if (shapeCounter == 12) {
 				return;
 			}
@@ -85,7 +86,8 @@ public class UnityOSCListener : MonoBehaviour  {
 			Color shapeColor = new Color(float.Parse(rgb[0])/255f, float.Parse(rgb[1])/255f, float.Parse(rgb[2])/255f);
 			Debug.Log(shapeColor);
 			string id = createVals[2];
-			int shapesIndex = int.Parse(createVals[0]);
+			int shapesIndex = shapeCounter % numShapes;
+			Debug.Log ("index" + shapesIndex);
 			GameObject newShape;
 			Vector3 initPos = helpers.locationOnXYCircle(shapeCounter, radius, angle);
 			int shapeCount = shapeCounter % numShapes;
@@ -109,7 +111,6 @@ public class UnityOSCListener : MonoBehaviour  {
 //			trail.renderer.material.SetColor("_TintColor", shapeColor);
 			bounds.Encapsulate(newShape.transform.position);
 			init = true;
-			shapeCounter++;
 
 //			message = new OSCMessage("/shape", "1");
 //			transmitter = new OSCTransmitter("10.0.0.2", sendport);

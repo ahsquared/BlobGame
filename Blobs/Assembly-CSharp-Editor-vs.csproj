@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\JellyMesh\Editor\JellyMeshEditor.cs" />
+     <Compile Include="Assets\TerrainToolkit\Editor\TerrainToolkitEditor.cs" />
+     <None Include="Assets\Standard Assets\Glass Refraction (Pro Only)\Sources\Shaders\Glass-Stained-BumpDistort.shader" />
      <None Include="Assets\GLSL Shaders\Mandel.shader" />
      <None Include="Assets\GLSL Shaders\Kaleidoscope.shader" />
      <None Include="Assets\Fur\Support\Fur.shader" />
@@ -72,9 +74,13 @@
      <None Include="Assets\GLSL Shaders\Demo2.shader" />
      <None Include="Assets\GLSL Shaders\demo.shader" />
      <None Include="Assets\GLSL Shaders\Fur2.shader" />
+     <None Include="Assets\TerrainToolkit\Read me.txt" />
      <None Include="Assets\GLSL Shaders\MotionBlur.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>/Users/ahayter/Documents/Blob Game/Blobs/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
+ <Reference Include="Assembly-UnityScript">
+ <HintPath>/Users/ahayter/Documents/Blob Game/Blobs/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>

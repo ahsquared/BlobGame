@@ -51,6 +51,8 @@
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCPacket.cs" />
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCReceiver.cs" />
      <Compile Include="Assets\Plugins\OSC.NET\jsOSCTransmitter.cs" />
+     <Compile Include="Assets\Standard Assets\Scripts\General Scripts\ActivateTrigger.cs" />
+     <None Include="Assets\Standard Assets\Glass Refraction (Pro Only)\Sources\Shaders\Glass-Stained-BumpDistort.shader" />
      <None Include="Assets\GLSL Shaders\Mandel.shader" />
      <None Include="Assets\GLSL Shaders\Kaleidoscope.shader" />
      <None Include="Assets\Fur\Support\Fur.shader" />
@@ -76,6 +78,7 @@
      <None Include="Assets\GLSL Shaders\Demo2.shader" />
      <None Include="Assets\GLSL Shaders\demo.shader" />
      <None Include="Assets\GLSL Shaders\Fur2.shader" />
+     <None Include="Assets\TerrainToolkit\Read me.txt" />
      <None Include="Assets\GLSL Shaders\MotionBlur.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>

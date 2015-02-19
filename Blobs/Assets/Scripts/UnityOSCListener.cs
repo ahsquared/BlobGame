@@ -9,8 +9,8 @@ using OSC.NET;
 public class UnityOSCListener : MonoBehaviour  {
 	//private GameObject madeCube;
 	public Quaternion rotation;
-	public GameObject[] shapes = new GameObject[6];
-	private int numShapes = 6;
+	private static int numShapes = 6;
+	public GameObject[] shapes = new GameObject[numShapes];
 	public float radius = 4f;
 	public float angle = Mathf.PI / 6; //30f;
 	private bool init = false;
@@ -63,6 +63,7 @@ public class UnityOSCListener : MonoBehaviour  {
 				float valZ = float.Parse( accVals [2] );
 				Vector3 v = new Vector3(valX, valY, valZ);
 				string accId = accVals[3];
+				Debug.Log (accId);
 				GameObject shapeToMove = GameObject.Find (accId);
 				shapeToMove.GetComponent<move>().jump(v);
 			}
@@ -91,14 +92,8 @@ public class UnityOSCListener : MonoBehaviour  {
 			GameObject newShape;
 			Vector3 initPos = helpers.locationOnXYCircle(shapeCounter, radius, angle);
 			int shapeCount = shapeCounter % numShapes;
-			newShape = (GameObject) Instantiate(shapes[shapesIndex], initPos, Quaternion.identity);
-			//			if (shapeCounter % 3 == 0) {
-			//				newShape = (GameObject)Instantiate(shape1, initPos, Quaternion.identity);
-			//			} else if (shapeCounter % 2 == 0) {
-			//				newShape = (GameObject)Instantiate(shape2, initPos, Quaternion.identity);
-			//			} else  {
-			//				newShape = (GameObject)Instantiate(shape3, initPos, Quaternion.identity);
-			//			}
+			Debug.Log ("shapeCount: " + shapeCount);
+			newShape = (GameObject) Instantiate(shapes[shapeCount], initPos, Quaternion.identity);
 			newShape.name = id;
 			newShape.GetComponent<MidiControl>().controlNumber = shapeCounter + 1;
 			newShape.GetComponent<move>().initPos = initPos;

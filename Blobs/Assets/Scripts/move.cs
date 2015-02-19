@@ -73,7 +73,7 @@ public class move : MonoBehaviour {
 	}
 
 	public void jump(Vector3 v) {
-		JellyMesh m_JellyMesh = GetComponent<JellyMesh> ();
+		JellyMesh m_JellyMesh = gameObject.GetComponentInChildren<JellyMesh> ();
 		if (m_JellyMesh) {
 			Vector3 force = new Vector3(v.z, -v.y, v.x);
 			if ( ( Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs (v.z) ) > minAccelForLaunch) {

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Bounce : MonoBehaviour
 {
+	private JellyMesh parent;
 	private GameObject wrapperObject;
 	private GameObject centerObject;
 	float lobHeight = 10;
@@ -23,20 +24,22 @@ public class Bounce : MonoBehaviour
 //		bounce ();
 //	}
 	void OnTriggerEnter(Collider collider) {
-		Debug.Log (collider.gameObject);
-		Bounceable parent = collider.gameObject.GetComponentInParent<JellyMeshReferencePoint> ().ParentJellyMesh
-			.GetComponentInParent<Bounceable> ();
-		centerObject = parent.centerObject;
-		wrapperObject = parent.wrapperObject;
-		wrapperObject.transform.position = centerObject.transform.position;
-		targetPosition = target.transform.position;
+		parent = collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<JellyMesh>();
+//		centerObject = parent.centerObject;
+//		wrapperObject = parent.wrapperObject;
+//		centerObject.rigidbody.useGravity = false;
+//		centerObject.rigidbody.isKinematic = true;
+//		targetPosition = target.transform.position;
 		bounce ();
 	}
-	void bounce(){
-		//wrapperObject.rigidbody.useGravity = false;
-		//wrapperObject.rigidbody.isKinematic = true;
-		centerObject.rigidbody.useGravity = false;
-		centerObject.rigidbody.isKinematic = true;
+
+	void bounce() {
+		// use addForce
+		Debug.Log("bounce");
+		parent.AddForce(new Vector3(-3000.0f, 3000.0f, -3000.0f), true);
+	}
+
+	void bounceTween(){ 
 		iTween.MoveBy(centerObject, iTween.Hash("y", lobHeight, "time", lobTime/2, "easeType", iTween.EaseType.easeOutQuad));
 		iTween.MoveBy(centerObject, iTween.Hash("y", -lobHeight, "time", lobTime/2, "delay", lobTime/2, "easeType", iTween.EaseType.easeInCubic));     
 		iTween.MoveTo(wrapperObject, iTween.Hash("position", targetPosition, "time", lobTime, "easeType", iTween.EaseType.linear, "onComplete", "resetRigidBody", "onCompleteTarget", gameObject));
@@ -45,10 +48,11 @@ public class Bounce : MonoBehaviour
 
 	void resetRigidBody() {
 		Debug.Log ("done");
-		//wrapperObject.rigidbody.useGravity = true;
-		//wrapperObject.rigidbody.isKinematic = false;
-		centerObject.rigidbody.isKinematic = false;
-		centerObject.rigidbody.useGravity = true;
+		//centerObject.rigidbody.isKinematic = false;
+		//centerObject.rigidbody.useGravity = true;
+//		centerObject.rigidbody.velocity = Vector3.zero;
+//		centerObject.rigidbody.angularVelocity = Vector3.zero;
+//		centerObject.transform.position = new Vector3 (0, 0, 0);
 	}
 
 	void Update() {

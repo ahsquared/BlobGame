@@ -63,7 +63,6 @@ public class UnityOSCListener : MonoBehaviour  {
 				float valZ = float.Parse( accVals [2] );
 				Vector3 v = new Vector3(valX, valY, valZ);
 				string accId = accVals[3];
-				Debug.Log (accId);
 				GameObject shapeToMove = GameObject.Find (accId);
 				shapeToMove.GetComponent<move>().jump(v);
 			}

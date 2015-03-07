@@ -33,14 +33,16 @@ public class move : MonoBehaviour {
 	public float scaleFactor = 1f;
 	public float minAccelForLaunch = 20f;
 
+	// to stop updating the position of the wrapper while tweening the jellymesh
+	public bool bouncing = false;
+
 	private int[] notes = { 60, 62, 64, 65, 67, 69, 71, 72 };
+
+	private GameObject centerObject;
 
 	// Use this for initialization
 	void Start () {
-//		iTween.ScaleBy (gameObject, iTween.Hash ("amount", new Vector3(2f, 2f, 2f), 
-//		                                         "time", .5f, 
-//		                                         "easetype", iTween.EaseType.easeInQuint,
-//		                                         "looptype", iTween.LoopType.pingPong));
+		//centerObject = gameObject.GetComponentInChildren<JellyMeshReferencePoint> ().gameObject;
 	}
 
 	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
@@ -55,8 +57,16 @@ public class move : MonoBehaviour {
 		if (timeSinceDisconnected > timeToLive) {
 			Debug.Log ("go away");
 			GameObject receiver = GameObject.Find ("OSCReceiver");
-			receiver.GetComponent<UnityOSCListener>().shapeCounter--;
-			Destroy(gameObject);
+			receiver.GetComponent<UnityOSCListener> ().shapeCounter--;
+			Destroy (gameObject);
+		} else {
+//			if (!bouncing) {
+//				float x = gameObject.transform.position.x + gameObject.GetComponentInChildren<JellyMesh>().transform.position.x;
+//				float y = gameObject.transform.position.y + gameObject.GetComponentInChildren<JellyMesh>().transform.position.y;
+//				float z = gameObject.transform.position.z + gameObject.GetComponentInChildren<JellyMesh>().transform.position.z;
+//				gameObject.transform.position = new Vector3(x, y, z);
+//				gameObject.GetComponentInChildren<JellyMesh>().transform.position = Vector3.zero;
+//			}
 		}
 	}
 
@@ -73,7 +83,7 @@ public class move : MonoBehaviour {
 	}
 
 	public void jump(Vector3 v) {
-		JellyMesh m_JellyMesh = gameObject.GetComponentInChildren<JellyMesh> ();
+		JellyMesh m_JellyMesh = GetComponent<JellyMesh> ();
 		if (m_JellyMesh) {
 			Vector3 force = new Vector3(v.z, -v.y, v.x);
 			if ( ( Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs (v.z) ) > minAccelForLaunch) {
@@ -94,6 +104,35 @@ public class move : MonoBehaviour {
 			//cubeToScale.transform.GetComponentInChildren<Light>().light.range = 3 * (x + y + z);
 		}
 	}
+//	public void jump(Vector3 v) {
+//		if (gameObject) {
+//			Vector3 force = new Vector3(v.z, -v.y, v.x);
+//			if ( ( Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs (v.z) ) > minAccelForLaunch) {
+//				Vector3 torqueVector = Vector3.zero;
+//				torqueVector.x = UnityEngine.Random.Range(m_MinTorqueVector.x, m_MaxTorqueVector.x);
+//				torqueVector.y = UnityEngine.Random.Range(m_MinTorqueVector.y, m_MaxTorqueVector.y);
+//				torqueVector.z = UnityEngine.Random.Range(m_MinTorqueVector.z, m_MaxTorqueVector.z);
+//				torqueVector.Normalize();
+//
+//				force = force * scaleFactor;
+//				Debug.Log (force);
+//				GameObject centerObject = gameObject.GetComponentInChildren<JellyMeshReferencePoint> ().gameObject;
+//				force.Normalize();
+//				float lobHeight = force.y * 5;
+//				float lobTime = 1f;
+//				Vector3 amountXZ = new Vector3(force.x, 0, force.z) * 5;
+//				//gameObject.GetComponentInChildren<JellyMesh>().AddForce(force, m_CentralPointOnly);
+//				//gameObject.GetComponentInChildren<JellyMesh>().AddTorque(torqueVector * UnityEngine.Random.Range(m_MinTorqueForce, m_MaxTorqueForce), false);
+//
+//				centerObject.rigidbody.isKinematic = true;
+//
+//				iTween.MoveBy(centerObject, iTween.Hash("y", lobHeight, "time", lobTime/2, "easeType", iTween.EaseType.easeOutQuad));
+//				iTween.MoveBy(centerObject, iTween.Hash("y", -lobHeight, "time", lobTime/2, "delay", lobTime/2, "easeType", iTween.EaseType.easeInCubic));     
+//				iTween.MoveBy(gameObject, iTween.Hash("amount", amountXZ, "time", lobTime, "easeType", iTween.EaseType.linear, "onComplete", "resetKinematic", "onCompleteTarget", gameObject));
+//				timeSinceDisconnected = 0f;
+//			}
+//		}
+//	}
 	public void Fling (Vector3 v) {
 		if (!moving) {
 			moving = true;
@@ -110,6 +149,11 @@ public class move : MonoBehaviour {
 		iTween.MoveTo (gameObject, iTween.Hash ("position", initPos, "time", time, "oncomplete", "ResetMoving", "easetype", iTween.EaseType.easeOutBounce));
 		//Debug.Log ("moveTo: " + initPos);
 	}
+
+	void resetKinematic() {
+		//centerObject.rigidbody.isKinematic = false;
+	}
+
 	void ResetMoving() {
 		moving = false;
 		//Debug.Log ("resetFlag: " + moving);

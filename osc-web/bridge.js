@@ -5,6 +5,7 @@ var oscServer, oscClient;
 
 io.sockets.on('connection', function (socket) {
   socket.on("config", function (obj) {
+  
     oscServer = new osc.Server(obj.server.port, obj.server.host);
     oscClient = new osc.Client(obj.client.host, obj.client.port);
 
@@ -16,6 +17,10 @@ io.sockets.on('connection', function (socket) {
     });
   });
   socket.on("message", function (obj) {
-    oscClient.send(obj);
+  	if (oscClient)
+    	oscClient.send(obj);
+  });
+  socket.on("disconnect", function () {
+	oscServer.kill();
   });
 });

@@ -4,6 +4,7 @@ using System.Collections;
 public class MidiControl : MonoBehaviour
 {
 	public MidiChannel channel = MidiChannel.Ch1;
+	public int trackNumber = 1;
 	public int controlNumber = 1;
 	public float delay = 0.0f;
 	public float length = 0.1f;
@@ -35,8 +36,14 @@ public class MidiControl : MonoBehaviour
 		yield return new WaitForSeconds(length);
 		MidiOut.SendNoteOff(channel, noteNumber);
 		Debug.Log ("note off: " + noteNumber);
+		Debug.Log (channel);
 	}
-		
+	public void sendClipLaunch(int controlNumber) {
+		controlNumber = Mathf.Clamp (controlNumber, 0, 127);
+		MidiOut.SendControlChange(channel, controlNumber, ((float) trackNumber) / 127f);
+		Debug.Log ("cc send: " + controlNumber + ", trackNumber: " + trackNumber);
+		Debug.Log (trackNumber);
+	}	
 	public void sendCC(float val) {
 		float adjustedVal = Mathf.Min (1, val * ccScale);
 		currentVal = (adjustedVal * kFilteringFactor) + (currentVal * (1.0f - kFilteringFactor));

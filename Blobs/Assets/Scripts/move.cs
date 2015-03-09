@@ -40,15 +40,36 @@ public class move : MonoBehaviour {
 
 	private GameObject centerObject;
 
+	// in c vars
+	private bool inCMode = false;
+	private int partCounter = 0;
+	private int partRepeatCount = 0;
+	private int repeatMin = 5;
+	private int repeatMax = 5;
+	private int partRepeatMax = 7;
+
 	// Use this for initialization
 	void Start () {
 		//centerObject = gameObject.GetComponentInChildren<JellyMeshReferencePoint> ().gameObject;
+		partRepeatMax = Random.Range(repeatMin, repeatMax);
 	}
 
 	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
 		// Debug.Log ("magnitude: " + collision.Collision.relativeVelocity.magnitude);
-		int note = notes [Random.Range (0, 7)];
-		StartCoroutine(GetComponent<MidiControl>().sendNote (note, 100f));
+		if (!inCMode) {
+			int note = notes [Random.Range (0, 7)];
+			StartCoroutine (GetComponent<MidiControl> ().sendNote (note, 100f));
+		} else {
+			//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
+			GetComponent<MidiControl> ().sendClipLaunch (partCounter);
+			if (partRepeatCount < partRepeatMax) {
+	    		partRepeatCount++;
+			} else {
+				partCounter++;
+				partRepeatCount = 0;
+				partRepeatMax = Random.Range (repeatMin, repeatMax);
+			}
+		}
 	}
 
 	// Update is called once per frame

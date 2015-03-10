@@ -44,7 +44,6 @@ public static class MidiOut
         int cn = Mathf.Clamp ((int)channel, 0, 15);
         controlNumber = Mathf.Clamp (controlNumber, 0, 127);
         value = Mathf.Clamp (127.0f * value, 0.0f, 127.0f);
-		Debug.Log ("vel: " + value);
         MidiBridge.instance.Send (0xb0 + cn, controlNumber, (int)value);
     }
 }

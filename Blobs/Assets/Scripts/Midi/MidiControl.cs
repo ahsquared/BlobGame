@@ -41,8 +41,8 @@ public class MidiControl : MonoBehaviour
 	public void sendClipLaunch(int controlNumber) {
 		controlNumber = Mathf.Clamp (controlNumber, 0, 127);
 		MidiOut.SendControlChange(channel, controlNumber, ((float) trackNumber) / 127f);
-		Debug.Log ("cc send: " + controlNumber + ", trackNumber: " + trackNumber);
-		Debug.Log (trackNumber);
+
+		Debug.Log ("cc send: " + controlNumber + ", trackNumber: " + trackNumber);;
 	}	
 	public void sendCC(float val) {
 		float adjustedVal = Mathf.Min (1, val * ccScale);

@@ -1,38 +1,68 @@
 // constant globals
-var IS_IOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+var IS_IOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
+	staveCanvasWrapper = document.getElementById('stave-wrapper'),
+	socket,
+	game,
+	inCParts;
 
-
-socket = io.connect("http://" + location.hostname, {port: 8081, rememberTransport: false});
-socket.on('connect', function () {
-	// sends to socket.io server the host/port of oscServer
-	// and oscClient
-	socket.emit('config',
-		{
-			server: {
-				port: 3333,
-				host: location.hostname
-			},
-			client: {
-				port: 3334,
-				host: location.hostname
-			}
+function setupGame() {
+	var VideoPlayer = document.getElementById('VideoPlayer'),
+		AudioPlayer = document.getElementById('AudioPlayer'),
+		BeginTheParty = document.getElementById('BeginTheParty'),
+		BeginThePartyBtn = document.getElementById('BeginThePartyBtn');
+	BeginThePartyBtn.addEventListener('touchstart', touchHandler);
+	BeginThePartyBtn.addEventListener('click', touchHandler);
+	function touchHandler(e) {
+		e.preventDefault();
+		if (IS_IOS) {
+			AudioPlayer.play();
+			AudioPlayer.volume = 0;
+		} else {
+			VideoPlayer.play();
+			VideoPlayer.volume = 0;
 		}
-	);
-	//console.log(socket.socket.sessionid);
-	polydanceparty.init();
-
-});
-
-socket.on('message', function (obj) {
-	//console.log(obj);
-	//var log = document.getElementById('log');
-	//log.innerHTML = obj;
-	if (obj[0] === "bounce") {
-		window.navigator.vibrate(200);
+		BeginTheParty.className = 'hide';
+		BeginThePartyBtn.removeEventListener('touchstart', touchHandler);
+		BeginThePartyBtn.removeEventListener('click', touchHandler);
+		connectToGame();
 	}
-});
+}
 
-var polydanceparty = {
+
+function connectToGame() {
+	socket = io.connect("http://" + location.hostname, {port: 8081, rememberTransport: false});
+	socket.on('connect', function () {
+		// sends to socket.io server the host/port of oscServer
+		// and oscClient
+		socket.emit('config',
+			{
+				server: {
+					port: 3333,
+					host: location.hostname
+				},
+				client: {
+					port: 3334,
+					host: location.hostname
+				}
+			}
+		);
+		//console.log(socket.socket.sessionid);
+		game.init();
+
+	});
+	socket.on('message', function (obj) {
+		//var log = document.getElementById('log');
+		//log.innerHTML = obj;
+		if (obj[0] === "bounce") {
+			window.navigator.vibrate(200);
+		}
+		if (obj[0] === "partNumber") {
+			drawStaff(staveCanvasWrapper, staveCanvasWrapper.offsetWidth, inCParts[obj[1]]);
+		}
+	});
+}
+
+game = {
 	shapeNumber: 0,
 	init: function () {
 		gyro.frequency = 40;
@@ -40,57 +70,41 @@ var polydanceparty = {
 			shape = document.getElementById('shape'),
 			info = document.getElementById('info'),
 			content = document.getElementById('content'),
-			VideoPlayer = document.getElementById('VideoPlayer'),
-			AudioPlayer = document.getElementById('AudioPlayer'),
-			BeginTheParty = document.getElementById('BeginTheParty'),
-			BeginThePartyBtn = document.getElementById('BeginThePartyBtn'),
 			init = false,
 			numShapes = 6,
 			staffCanvas = document.getElementById('staff');
 		//shapeNumber = this.randomIntFromInterval(1, numShapes);
 
-		function touchHandler(e) {
-			e.preventDefault();
-			if (IS_IOS) {
-				AudioPlayer.play();
-				AudioPlayer.volume = 0;
-			} else {
-				VideoPlayer.play();
-				VideoPlayer.volume = 0;
-			}
-			BeginTheParty.className = 'hide';
-			BeginThePartyBtn.removeEventListener('touchstart', touchHandler);
-		}
-		//BeginThePartyBtn.addEventListener('touchstart', touchHandler);
+
 		//drawStaff(staffCanvas, staffCanvas.offsetWidth, inCParts[0]);
 		gyro.startTracking(function (o) {
 			// o.x, o.y, o.z for accelerometer
 			// o.alpha, o.beta, o.gamma for gyro
 			if (o.alpha != null && !init) {
-				polydanceparty.initOrientation.alpha = o.alpha;
-				polydanceparty.initOrientation.beta = Math.abs(o.beta);
-				polydanceparty.initOrientation.gamma = Math.abs(o.gamma);
+				game.initOrientation.alpha = o.alpha;
+				game.initOrientation.beta = Math.abs(o.beta);
+				game.initOrientation.gamma = Math.abs(o.gamma);
 				init = true;
-				polydanceparty.shapeNumber = polydanceparty.randomIntFromInterval(1, 6);
+				game.shapeNumber = game.randomIntFromInterval(1, 6);
 				//shape.src = "/img/Shape-" + polydanceparty.shapeNumber + ".png";
-				info.className = "shape" + polydanceparty.shapeNumber;
-				var h = polydanceparty.randomIntFromInterval(1, 360) / 360;
+				info.className = "shape" + game.shapeNumber;
+				var h = game.randomIntFromInterval(1, 360) / 360;
 				var hsl = h + ",0.8,0.65";
-				var rgb = polydanceparty.hslToRgb(h, 0.8, 0.65);
+				var rgb = game.hslToRgb(h, 0.8, 0.65);
 				var rgbStr = rgb[0] + "," + rgb[1] + "," + rgb[2];
-				socket.emit('message', '/create ' + (polydanceparty.shapeNumber - 1) + "|" + rgbStr + '|' + socket.socket.sessionid);
+				socket.emit('message', '/create ' + (game.shapeNumber - 1) + "|" + rgbStr + '|' + socket.socket.sessionid);
 			}
 
 			if (!init)
 				return;
 
 			var adjustedRotation = {
-				alpha: o.alpha - polydanceparty.initOrientation.alpha,
-				beta: o.beta - polydanceparty.initOrientation.beta,
-				gamma: o.gamma - polydanceparty.initOrientation.gamma
+				alpha: o.alpha - game.initOrientation.alpha,
+				beta: o.beta - game.initOrientation.beta,
+				gamma: o.gamma - game.initOrientation.gamma
 			};
 
-			var netAcceleration = polydanceparty.getAccelerationWithoutGravity(o);
+			var netAcceleration = game.getAccelerationWithoutGravity(o);
 			//socket.emit('message', '/rot ' + o.alpha + "|" + o.beta + "|" + o.gamma + "|" + socket.socket.sessionid);
 			socket.emit('message', '/rot ' + adjustedRotation.alpha + "|" +
 				adjustedRotation.beta + "|" + adjustedRotation.gamma + "|" +
@@ -99,7 +113,7 @@ var polydanceparty = {
 				netAcceleration.y + "|" + netAcceleration.z + "|" +
 				socket.socket.sessionid);
 
-			var smoothRotation = polydanceparty.getSmoothRotation(adjustedRotation.alpha, adjustedRotation.beta, adjustedRotation.gamma);
+			var smoothRotation = game.getSmoothRotation(adjustedRotation.alpha, adjustedRotation.beta, adjustedRotation.gamma);
 
 
 			//polydanceparty.rotateShape(smoothRotation, accel);
@@ -230,83 +244,81 @@ var polydanceparty = {
 	}
 };
 
-// polydanceparty.init();
-
-var inCParts = [
+inCParts = [
 	{
 		notes: [
-			// A quarter-note C.
-			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "q"}),
-			// A quarter-note D.
-			new Vex.Flow.StaveNote({keys: ["d/4"], duration: "q"}),
-			// A quarter-note rest. Note that the key (b/4) specifies the vertical
-			// position of the rest.
-			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
-			// A C-Major chord.
-			new Vex.Flow.StaveNote({keys: ["c/4", "e/4", "g/4"], duration: "q"})
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
+				.addModifier(0, new Vex.Flow.GraceNoteGroup([
+					new Vex.Flow.GraceNote({keys: ['c/4'], duration: '16', slash: false})], true).beamNotes()),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
+				.addModifier(0, new Vex.Flow.GraceNoteGroup([
+					new Vex.Flow.GraceNote({keys: ['c/4'], duration: '16', slash: false})], true).beamNotes()),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
+				.addModifier(0, new Vex.Flow.GraceNoteGroup([
+					new Vex.Flow.GraceNote({keys: ['c/4'], duration: '16', slash: false})], true).beamNotes())
 		],
 		voice: {
-			num_beats: 4,
+			num_beats: 3,
 			beat_value: 4
 		}
 	},
 	{
 		notes: [
-			new Vex.Flow.StaveNote({keys: ["d/4"], duration: "8d"}),
-			new Vex.Flow.StaveNote({keys: ["d/4"], duration: "16"}),
-			new Vex.Flow.StaveNote({keys: ["a/5"], duration: "q"}),
-			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
-			new Vex.Flow.StaveNote({keys: ["b/5"], duration: "8d"}),
-			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"})
+				.addModifier(0, new Vex.Flow.GraceNoteGroup([
+					new Vex.Flow.GraceNote({keys: ['c/4'], duration: '16', slash: false})], true).beamNotes()),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
 		],
+		beams: [0, 1],
 		voice: {
-			num_beats: 4,
+			num_beats: 2,
 			beat_value: 4
 		}
 	}
 ];
 
 // draw staff
-function drawStaff(canvas, width, part) {
-	var renderer = new Vex.Flow.Renderer(canvas,
-		Vex.Flow.Renderer.Backends.CANVAS),
-		width = width - 20;
+function drawStaff(staveCanvasWrapper, width, part) {
+	staveCanvasWrapper.innerHTML = '<canvas id="stave"></canvas>';
+	var canvas = document.getElementById('stave'),
+		renderer = new Vex.Flow.Renderer(canvas,
+			Vex.Flow.Renderer.Backends.CANVAS),
+		staveWidth = width - 40;
 
 	var ctx = renderer.getContext();
-	var stave = new Vex.Flow.Stave(10, 0, width);
-	stave.addClef("treble").setContext(ctx).draw();
-//	// Create the notes
-//	var notes = [
-//		// A quarter-note C.
-//		new Vex.Flow.StaveNote({keys: ["c/4"], duration: "q"}),
-//		// A quarter-note D.
-//		new Vex.Flow.StaveNote({keys: ["d/4"], duration: "q"}),
-//		// A quarter-note rest. Note that the key (b/4) specifies the vertical
-//		// position of the rest.
-//		new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
-//		// A C-Major chord.
-//		new Vex.Flow.StaveNote({keys: ["c/4", "e/4", "g/4"], duration: "q"})
-//	];
-//
-//	// Create a voice in 4/4
-//	var voice = new Vex.Flow.Voice({
-//		num_beats: 4,
-//		beat_value: 4,
-//		resolution: Vex.Flow.RESOLUTION
-//	});
-	
+	var stave = new Vex.Flow.Stave(10, 0, staveWidth);
+	stave.addClef("treble")
+		.setBegBarType(Vex.Flow.Barline.type.REPEAT_BEGIN)
+		.setEndBarType(Vex.Flow.Barline.type.REPEAT_END)
+		.setContext(ctx)
+		.draw();
+
 	var voice = new Vex.Flow.Voice({
 		num_beats: part.voice.num_beats,
 		beat_value: part.voice.beat_value,
 		resolution: Vex.Flow.RESOLUTION
 	});
+	var beam, beamNotes;
+	if (part.beams) {
+		beamNotes = part.beams.map(function (b) {
+			return part.notes[b];
+		});
+		console.log(part.beams);
+		beam = new Vex.Flow.Beam(beamNotes);
+	}
 	// Add notes to voice
 	voice.addTickables(part.notes);
 
 	// Format and justify the notes to canvas width
 	var formatter = new Vex.Flow.Formatter().
-		joinVoices([voice]).format([voice], width);
+		joinVoices([voice]).format([voice], staveWidth);
 
 	// Render voice
 	voice.draw(ctx, stave);
+	if (part.beams) {
+		beam.setContext(ctx).draw();
+	}
 }
+
+setupGame();

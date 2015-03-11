@@ -49,7 +49,7 @@ public class move : MonoBehaviour {
 	private int partRepeatCount = 0;
 	private int repeatMin = 5;
 	private int repeatMax = 5;
-	private int partRepeatMax = 1;
+	private int partRepeatMin = 0;
 
 	/**
 	 * send OSC messages back to the phone
@@ -73,16 +73,21 @@ public class move : MonoBehaviour {
 			if (jumped) {
 				//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
 				GetComponent<MidiControl> ().sendClipLaunch (partCounter);
-				if (partRepeatCount < partRepeatMax) {
-		    		partRepeatCount++;
+				// send messages to player
+				OSCMessage message = new OSCMessage ("bounce");
+				oscTransmitter.Send (message);
+				OSCMessage message2 = new OSCMessage("partNumber", partCounter);
+				oscTransmitter.Send(message2);
+				// reset jump flag
+				jumped = false;
+				// check if need to increment part
+				if (partRepeatCount < partRepeatMin) {
+					partRepeatCount++;
 				} else {
 					partCounter++;
 					partRepeatCount = 0;
-					//partRepeatMax = Random.Range (repeatMin, repeatMax);
+					//partRepeatMin = Random.Range (repeatMin, repeatMax);
 				}
-				OSCMessage message = new OSCMessage ("bounce");
-				oscTransmitter.Send (message);
-				jumped = false;
 			}
 		}
 	}

@@ -1,6 +1,8 @@
-// constant globals
+/*global Vex, io, gyro */
+
 var IS_IOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
 	staveCanvasWrapper = document.getElementById('stave-wrapper'),
+	partHeader = document.getElementById('part-header'),
 	socket,
 	game,
 	inCParts;
@@ -58,6 +60,7 @@ function connectToGame() {
 		}
 		if (obj[0] === "partNumber") {
 			drawStaff(staveCanvasWrapper, staveCanvasWrapper.offsetWidth, inCParts[obj[1]]);
+			partHeader.innerHTML = (obj[1] + 1) + ".";
 		}
 	});
 }
@@ -71,8 +74,7 @@ game = {
 			info = document.getElementById('info'),
 			content = document.getElementById('content'),
 			init = false,
-			numShapes = 6,
-			staffCanvas = document.getElementById('staff');
+			numShapes = 6;
 		//shapeNumber = this.randomIntFromInterval(1, numShapes);
 
 
@@ -95,8 +97,9 @@ game = {
 				socket.emit('message', '/create ' + (game.shapeNumber - 1) + "|" + rgbStr + '|' + socket.socket.sessionid);
 			}
 
-			if (!init)
+			if (!init) {
 				return;
+			}
 
 			var adjustedRotation = {
 				alpha: o.alpha - game.initOrientation.alpha,
@@ -140,20 +143,25 @@ game = {
 	hslToRgb: function (h, s, l) {
 		var r, g, b;
 
-		if (s == 0) {
+		if (s === 0) {
 			r = g = b = l; // achromatic
 		} else {
 			function hue2rgb(p, q, t) {
-				if (t < 0)
+				if (t < 0) {
 					t += 1;
-				if (t > 1)
+				}
+				if (t > 1) {
 					t -= 1;
-				if (t < 1 / 6)
+				}
+				if (t < 1 / 6) {
 					return p + (q - p) * 6 * t;
-				if (t < 1 / 2)
+				}
+				if (t < 1 / 2) {
 					return q;
-				if (t < 2 / 3)
+				}
+				if (t < 2 / 3) {
 					return p + (q - p) * (2 / 3 - t) * 6;
+				}
 				return p;
 			}
 
@@ -245,6 +253,7 @@ game = {
 };
 
 inCParts = [
+	// #1
 	{
 		notes: [
 			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
@@ -262,6 +271,7 @@ inCParts = [
 			beat_value: 4
 		}
 	},
+	// #2
 	{
 		notes: [
 			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"})
@@ -270,12 +280,226 @@ inCParts = [
 			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
 			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "q"})
 		],
-		beams: [0, 1],
+		beams: [
+			[0, 1]
+		],
 		voice: {
 			num_beats: 2,
 			beat_value: 4
 		}
-	}
+	},
+	// #3
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"})
+		],
+		beams: [
+			[2, 3]
+		],
+		voice: {
+			num_beats: 2,
+			beat_value: 4
+		}
+	},
+	// #4
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "8"})
+		],
+		beams: [
+			[2, 3]
+		],
+		voice: {
+			num_beats: 2,
+			beat_value: 4
+		}
+	},
+	// #5
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["e/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"})
+		],
+		beams: [
+			[0, 1]
+		],
+		voice: {
+			num_beats: 2,
+			beat_value: 4
+		}
+	},
+	// #6
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["c/5"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["c/5"], duration: "w"})
+		],
+		ties: [
+			[0, 1]
+		],
+		voice: {
+			num_beats: 8,
+			beat_value: 4
+		}
+	},
+	// #7
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
+			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"})
+		],
+		beams: [
+			[4, 5]
+		],
+		voice: {
+			num_beats: 9,
+			beat_value: 4
+		}
+	},
+	// #8
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "wd"}).addDotToAll(),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "w"})
+		],
+		ties: [
+			[1, 2]
+		],
+		voice: {
+			num_beats: 14,
+			beat_value: 4
+		}
+	},
+	// #9
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "8r"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qr"})
+		],
+		beams: [
+			[0, 1]
+		],
+		voice: {
+			num_beats: 4,
+			beat_value: 4
+		}
+	},
+	// #10
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"})
+		],
+		beams: [
+			[0, 1]
+		],
+		voice: {
+			num_beats: 1,
+			beat_value: 8
+		}
+	},
+	// #11
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"})
+		],
+		beams: [
+			[0, 1, 2, 3, 4, 5]
+		],
+		voice: {
+			num_beats: 3,
+			beat_value: 8
+		}
+	},
+	// #12
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "q"})
+		],
+		beams: [
+			[0, 1]
+		],
+		voice: {
+			num_beats: 6,
+			beat_value: 4
+		}
+	},
+	// #13
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "8d"}).addDotToAll(),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "8"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "qrd"}).addDotToAll(),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "16"}),
+			new Vex.Flow.StaveNote({keys: ["f/4"], duration: "hd"}).addDotToAll()
+		],
+		beams: [
+			[0, 1],
+			[2, 3, 4]
+		],
+		ties: [
+			[6, 7]
+		],
+		voice: {
+			num_beats: 6,
+			beat_value: 4
+		}
+	},
+	// #14
+	{
+		notes: [
+			new Vex.Flow.StaveNote({keys: ["c/4"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["b/4"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["g/4"], duration: "w"}),
+			new Vex.Flow.StaveNote({keys: ["f#/4"], duration: "w"})
+				.addAccidental(0, new Vex.Flow.Accidental("#"))
+		],
+		beams: [
+			[0, 1],
+			[2, 3, 4]
+		],
+		ties: [
+			[6, 7]
+		],
+		voice: {
+			num_beats: 16,
+			beat_value: 4
+		}
+	},
 ];
 
 // draw staff
@@ -299,26 +523,44 @@ function drawStaff(staveCanvasWrapper, width, part) {
 		beat_value: part.voice.beat_value,
 		resolution: Vex.Flow.RESOLUTION
 	});
+
 	var beam, beamNotes;
 	if (part.beams) {
 		beamNotes = part.beams.map(function (b) {
 			return part.notes[b];
 		});
-		console.log(part.beams);
 		beam = new Vex.Flow.Beam(beamNotes);
+	}
+	
+	var ties;
+	if (part.ties) {
+		ties = part.ties.map(function (tie) {
+			return new Vex.Flow.StaveTie({
+			first_note: part.notes[tie[0]],
+			last_note: part.notes[tie[1]],
+			first_indices: [0],
+			last_indices: [0]
+		  });
+	  });
 	}
 	// Add notes to voice
 	voice.addTickables(part.notes);
-
+	
 	// Format and justify the notes to canvas width
 	var formatter = new Vex.Flow.Formatter().
-		joinVoices([voice]).format([voice], staveWidth);
+		joinVoices([voice]).format([voice], staveWidth - 40);
 
 	// Render voice
 	voice.draw(ctx, stave);
 	if (part.beams) {
 		beam.setContext(ctx).draw();
 	}
+	if (part.ties) {
+		ties.forEach(function (tie) {
+			tie.setContext(ctx).draw();
+		});
+	}
 }
-
+//drawStaff(staveCanvasWrapper, staveCanvasWrapper.offsetWidth, inCParts[8]);
+//partHeader.innerHTML = 1 + ".";
 setupGame();

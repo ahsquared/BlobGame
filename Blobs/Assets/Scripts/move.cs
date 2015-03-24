@@ -76,7 +76,7 @@ public class move : MonoBehaviour {
 				// send messages to player
 				OSCMessage message = new OSCMessage ("bounce");
 				oscTransmitter.Send (message);
-				OSCMessage message2 = new OSCMessage("partNumber", partCounter);
+				OSCMessage message2 = new OSCMessage("partNumber", partCounter % 9);
 				oscTransmitter.Send(message2);
 				// reset jump flag
 				jumped = false;

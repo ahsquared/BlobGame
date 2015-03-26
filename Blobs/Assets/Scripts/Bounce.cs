@@ -30,13 +30,16 @@ public class Bounce : MonoBehaviour
 //		centerObject.rigidbody.useGravity = false;
 //		centerObject.rigidbody.isKinematic = true;
 //		targetPosition = target.transform.position;
+		collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<move>().changePart ();
 		bounce ();
 	}
 
 	void bounce() {
 		// use addForce
 		Debug.Log("bounce");
-		parent.AddForce(new Vector3(-3000.0f, 3000.0f, -3000.0f), true);
+		float directionX = Random.value > 0.5 ? 1.0f : -1.0f;
+		float directionY = Random.value > 0.5 ? 1.0f : -1.0f;
+		parent.AddForce(new Vector3(Random.Range (0.5f, 1f) * 5000.0f * directionX, 10000.0f, Random.Range (0.5f, 1f) * 5000.0f * directionY), true);
 	}
 
 	void bounceTween(){ 

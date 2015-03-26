@@ -74,41 +74,58 @@ public class UnityOSCListener : MonoBehaviour  {
 
 		if (address.Contains ("create")) {
 			shapeCounter++;
-			if (shapeCounter == 8) {
+			if (shapeCounter == 16) {
 				return;
 			}
 			string[] createVals = address.Substring (8).Split ('|');
 			//Debug.Log (createVals[0] + " -- " + createVals[1] + " -- " + createVals[2]);
-			string[] hsl = createVals[1].Split(',');
-			HSLColor hslColor = new HSLColor(float.Parse(hsl[0]), float.Parse(hsl[1]), float.Parse(hsl[2]));
+//			string[] hsl = createVals[1].Split(',');
+//			HSLColor hslColor = new HSLColor(float.Parse(hsl[0]), float.Parse(hsl[1]), float.Parse(hsl[2]));
+//			Debug.Log(hslColor);
 			//Color shapeColor = hslColor.ToRGBA();
-			string[] rgb = createVals[1].Split(',');
-			Color shapeColor = new Color(float.Parse(rgb[0])/255f, float.Parse(rgb[1])/255f, float.Parse(rgb[2])/255f);
-			//Debug.Log(shapeColor);
+//			string[] rgb = createVals[1].Split(',');
+//			Color shapeColor = new Color(float.Parse(rgb[0])/255f, float.Parse(rgb[1])/255f, float.Parse(rgb[2])/255f);
+
 			string id = createVals[2];
 			int shapesIndex = shapeCounter % numShapes;
 			//Debug.Log ("index" + shapesIndex);
 			GameObject newShape;
-			Vector3 initPos = helpers.locationOnXYCircle(shapeCounter, radius, angle);
+			Vector3 initPos = new Vector3(4.5f, 3f, 0f); //helpers.locationOnXYCircle(shapeCounter, radius, angle);
 			int shapeCount = shapeCounter % numShapes;
 			//Debug.Log ("shapeCount: " + shapeCount);
 			newShape = (GameObject) Instantiate(shapes[shapeCount], initPos, Quaternion.identity);
 			newShape.name = id;
-			newShape.GetComponent<MidiControl>().controlNumber = shapeCounter + 1;
+			//newShape.GetComponent<MidiControl>().controlNumber = shapeCounter + 1;
+			newShape.GetComponent<MidiControl>().trackNumber = shapeCounter + 1;
 			newShape.GetComponent<move>().initPos = initPos;
-//			Renderer[] shapeRenderers = newShape.GetComponentsInChildren<Renderer>();
-//			foreach(Renderer renderer in shapeRenderers) {
-//				renderer.material.SetColor("_Color", shapeColor);
-//				renderer.material.SetColor("_SpecColor", shapeColor);
-//			};
-//			Transform trail = newShape.transform.Find("Trail");
-//			trail.renderer.material.SetColor("_TintColor", shapeColor);
+			//set color
+//			Renderer shapeRenderer = newShape.GetComponent<Renderer>();
+//			shapeRenderer.material.SetColor("_Color", shapeColor);
 			bounds.Encapsulate(newShape.transform.position);
 			init = true;
+
+			// let the client know their player number
+			OSCMessage playerNumberMessage = new OSCMessage("playerNumber", shapeCounter);
+			transmitter.Send(playerNumberMessage);
 
 //			message = new OSCMessage("/shape", "1");
 //			transmitter = new OSCTransmitter("10.0.0.2", sendport);
 //			transmitter.Send(message);
+		}
+		if (address.Contains ("color")) {
+			string[] colorVals = address.Substring (7).Split ('|');
+			string[] rgb = colorVals[0].Split(',');
+			Color shapeColor = new Color(float.Parse(rgb[0])/255f, float.Parse(rgb[1])/255f, float.Parse(rgb[2])/255f);
+			Debug.Log (address);
+//			Debug.Log(rgb[0]);
+//			Debug.Log(rgb[1]);
+//			Debug.Log(rgb[2]);
+//			Debug.Log(float.Parse(rgb[0])/255f);
+//			Debug.Log(float.Parse(rgb[1])/255f);
+//			Debug.Log(float.Parse(rgb[2])/255f);
+			string colorId = colorVals[1];
+			GameObject shapeToColor = GameObject.Find (colorId);
+			shapeToColor.renderer.material.color = shapeColor;
 		}
 	}
 

@@ -47,6 +47,7 @@ public class move : MonoBehaviour {
 	private bool inCMode = true;
 	private int partCounter = 0;
 	private int partRepeatCount = 0;
+	private int numberOfParts = 53;
 	private int repeatMin = 5;
 	private int repeatMax = 5;
 	private int partRepeatMin = 0;
@@ -64,31 +65,51 @@ public class move : MonoBehaviour {
 
 	}
 
-	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
-		// Debug.Log ("magnitude: " + collision.Collision.relativeVelocity.magnitude);
-		if (!inCMode) {
-			int note = notes [Random.Range (0, 7)];
-			StartCoroutine (GetComponent<MidiControl> ().sendNote (note, 100f));
+//	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
+//		// Debug.Log ("magnitude: " + collision.Collision.relativeVelocity.magnitude);
+//		if (!inCMode) {
+//			int note = notes [Random.Range (0, 7)];
+//			StartCoroutine (GetComponent<MidiControl> ().sendNote (note, 100f));
+//		} else {
+//			if (jumped) {
+//				//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
+//				GetComponent<MidiControl> ().sendClipLaunch (partCounter);
+//				// send messages to player
+//				OSCMessage message = new OSCMessage ("bounce");
+//				oscTransmitter.Send (message);
+//				OSCMessage message2 = new OSCMessage("partNumber", partCounter % 9);
+//				oscTransmitter.Send(message2);
+//				// reset jump flag
+//				jumped = false;
+//				// check if need to increment part
+//				if (partRepeatCount < partRepeatMin) {
+//					partRepeatCount++;
+//				} else {
+//					partCounter++;
+//					partRepeatCount = 0;
+//					//partRepeatMin = Random.Range (repeatMin, repeatMax);
+//				}
+//			}
+//		}
+//	}
+
+	public void changePart() {
+		//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
+		GetComponent<MidiControl> ().sendClipLaunch (partCounter);
+		// send messages to player
+		OSCMessage message = new OSCMessage ("bounce");
+		oscTransmitter.Send (message);
+		OSCMessage message2 = new OSCMessage("partNumber", partCounter % numberOfParts);
+		oscTransmitter.Send(message2);
+		// reset jump flag
+		jumped = false;
+		// check if need to increment part
+		if (partRepeatCount < partRepeatMin) {
+			partRepeatCount++;
 		} else {
-			if (jumped) {
-				//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
-				GetComponent<MidiControl> ().sendClipLaunch (partCounter);
-				// send messages to player
-				OSCMessage message = new OSCMessage ("bounce");
-				oscTransmitter.Send (message);
-				OSCMessage message2 = new OSCMessage("partNumber", partCounter % 9);
-				oscTransmitter.Send(message2);
-				// reset jump flag
-				jumped = false;
-				// check if need to increment part
-				if (partRepeatCount < partRepeatMin) {
-					partRepeatCount++;
-				} else {
-					partCounter++;
-					partRepeatCount = 0;
-					//partRepeatMin = Random.Range (repeatMin, repeatMax);
-				}
-			}
+			partCounter++;
+			partRepeatCount = 0;
+			//partRepeatMin = Random.Range (repeatMin, repeatMax);
 		}
 	}
 

@@ -6,8 +6,11 @@ var oscServer, oscClient;
 io.sockets.on('connection', function (socket) {
   socket.on("config", function (obj) {
   
-    oscServer = new osc.Server(obj.server.port, obj.server.host);
-    oscClient = new osc.Client(obj.client.host, obj.client.port);
+	if (oscServer === undefined) {
+		oscServer = new osc.Server(obj.server.port, obj.server.host);
+		oscClient = new osc.Client(obj.client.host, obj.client.port);
+	}
+    
 
     oscClient.send('/status', socket.sessionId + ' connected');
 
@@ -21,6 +24,6 @@ io.sockets.on('connection', function (socket) {
     	oscClient.send(obj);
   });
   socket.on("disconnect", function () {
-	oscServer.kill();
+	//oscServer.kill();
   });
 });

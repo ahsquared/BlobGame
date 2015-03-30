@@ -5,6 +5,7 @@ var IS_IOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
 	partHeader = document.getElementById('part-header'),
 	socket,
 	game,
+	gameObjectId,
 	inCParts;
 
 function setupGame() {
@@ -32,6 +33,7 @@ function setupGame() {
 
 
 function connectToGame() {
+	var id, partNumber, playerNumber;
 	socket = io.connect("http://" + location.hostname, {port: 8081, rememberTransport: false});
 	socket.on('connect', function () {
 		// sends to socket.io server the host/port of oscServer
@@ -48,6 +50,7 @@ function connectToGame() {
 				}
 			}
 		);
+		gameObjectId = socket.socket.sessionid;
 		//console.log(socket.socket.sessionid);
 		game.init();
 
@@ -57,20 +60,36 @@ function connectToGame() {
 		//log.innerHTML = obj;
 		var even = false;
 		if (obj[0] === "bounce") {
+			id = obj[1];
+			console.log(id, gameObjectId);
+			if (id !== gameObjectId) {
+				return;
+			}
 			window.navigator.vibrate(200);
+
 		}
 		if (obj[0] === "partNumber") {
-			drawStaff(staveCanvasWrapper, obj[1], staveCanvasWrapper.offsetWidth, inCParts[obj[1]]);
-			partHeader.innerHTML = (obj[1] + 1) + ".";
+			id = obj[1].split('|')[1];
+			if (id !== gameObjectId) {
+				return;
+			}
+			partNumber = parseInt(obj[1].split("|")[0]);
+			drawStaff(staveCanvasWrapper, partNumber, staveCanvasWrapper.offsetWidth, inCParts[partNumber]);
+			partHeader.innerHTML = (partNumber + 1) + ".";
 		}
 		if (obj[0] === "playerNumber") {
 			num = obj[1];
-			console.log(obj[1]);
-			if ((obj[1] + 1) % 2 === 0) {
+			id = obj[1].split('|')[1];
+			//console.log(obj[1], id, gameObjectId);
+			if (id !== gameObjectId) {
+				return;
+			}
+			playerNumber = parseInt(obj[1].split("|")[0]);
+			if ((playerNumber + 1) % 2 === 0) {
 				even = true;
 			}
-			var h = ((360 / 16) * (even ? (obj[1] + 1) : ((16 - obj[1])))) / 360; //(360 / data.length) * i
-			console.log(h);
+			var h = ((360 / 16) * (even ? (playerNumber + 1) : ((16 - playerNumber)))) / 360; //(360 / data.length) * i
+			console.log(obj[1].split("|")[0], playerNumber, h);
 			var rgb = game.hslToRgb(h, 0.8, 0.65);
 			var rgbStr = rgb[0] + "," + rgb[1] + "," + rgb[2];
 			console.log(rgbStr);

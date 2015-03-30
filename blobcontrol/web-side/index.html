@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html> 
+    <head>
+        <title></title>
+        <meta name="viewport" content="width=320" />
+        <style>
+            * {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            html, body, #wrapper {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow:hidden;
+            }
+            #wrapper {
+                padding: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <p>Connect your OSC app/device at port 3333 to send messages to this
+                page.<br /><br />Configure your OSC app/device to listen at port 3334
+                to messages I send from this page.</p>
+
+            <hr />
+
+            Received from an OSC app/device at : <div id="status"></div>
+
+            <hr />
+
+
+            
+            <button onclick="socket.emit('message', '/foobar');">Send OSC message</button>
+
+            <div id="accel"></div>
+        </div>
+        <script>var ipAddress = "172.16.200.77";</script>
+        <script src="http://172.16.200.77:8081/socket.io/socket.io.js"></script>
+        <script src="gyro.js"></script>
+        <script src="main.js"></script>
+
+
+    </body> </html>

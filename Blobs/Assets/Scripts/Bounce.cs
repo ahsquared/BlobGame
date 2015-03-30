@@ -36,7 +36,7 @@ public class Bounce : MonoBehaviour
 
 	void bounce() {
 		// use addForce
-		Debug.Log("bounce");
+//		Debug.Log("bounce");
 		float directionX = Random.value > 0.5 ? 1.0f : -1.0f;
 		float directionY = Random.value > 0.5 ? 1.0f : -1.0f;
 		parent.AddForce(new Vector3(Random.Range (0.5f, 1f) * 5000.0f * directionX, 10000.0f, Random.Range (0.5f, 1f) * 5000.0f * directionY), true);

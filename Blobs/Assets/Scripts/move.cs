@@ -52,6 +52,8 @@ public class move : MonoBehaviour {
 	private int repeatMax = 5;
 	private int partRepeatMin = 0;
 
+	public string gameObjectId;
+
 	/**
 	 * send OSC messages back to the phone
 	 */
@@ -97,9 +99,9 @@ public class move : MonoBehaviour {
 		//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
 		GetComponent<MidiControl> ().sendClipLaunch (partCounter);
 		// send messages to player
-		OSCMessage message = new OSCMessage ("bounce");
+		OSCMessage message = new OSCMessage ("bounce", gameObjectId);
 		oscTransmitter.Send (message);
-		OSCMessage message2 = new OSCMessage("partNumber", partCounter % numberOfParts);
+		OSCMessage message2 = new OSCMessage("partNumber", (partCounter % numberOfParts) + "|" + gameObjectId);
 		oscTransmitter.Send(message2);
 		// reset jump flag
 		jumped = false;
@@ -120,6 +122,9 @@ public class move : MonoBehaviour {
 			Debug.Log ("go away");
 			GameObject receiver = GameObject.Find ("OSCReceiver");
 			receiver.GetComponent<UnityOSCListener> ().shapeCounter--;
+			GetComponent<MidiControl> ().sendClipStop ();
+			int trackNumber = GetComponent<MidiControl>().trackNumber;
+			receiver.GetComponent<UnityOSCListener> ().availableTracks[trackNumber - 1] = true;
 			Destroy (gameObject);
 		}
 	}
@@ -149,7 +154,7 @@ public class move : MonoBehaviour {
 				torqueVector.Normalize();
 
 				force = force * scaleFactor;
-				Debug.Log (force);
+//				Debug.Log (force);
 				m_JellyMesh.AddForce(force, m_CentralPointOnly);
 				m_JellyMesh.AddTorque(torqueVector * UnityEngine.Random.Range(m_MinTorqueForce, m_MaxTorqueForce), false);
 				timeSinceDisconnected = 0f;

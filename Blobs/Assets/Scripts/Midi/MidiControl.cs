@@ -39,10 +39,9 @@ public class MidiControl : MonoBehaviour
 		Debug.Log (channel);
 	}
 	public void sendClipLaunch(int controlNumber) {
-		controlNumber = Mathf.Clamp (controlNumber, 0, 127);
-		MidiOut.SendControlChange(channel, controlNumber, ((float) trackNumber) / 127f);
-
-		Debug.Log ("cc send: " + controlNumber + ", trackNumber: " + trackNumber);;
+		int ccNumber = Mathf.Clamp (controlNumber, 0, 127);
+		MidiOut.SendControlChange(channel, ccNumber, ((float) trackNumber) / 127f);
+		//Debug.Log ("cc send: " + ccNumber + ", trackNumber: " + trackNumber);
 	}	
 	public void sendClipStop() {
 		MidiOut.SendControlChange(channel, 127, ((float) trackNumber) / 127f);

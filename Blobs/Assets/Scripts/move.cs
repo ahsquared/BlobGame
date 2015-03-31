@@ -45,12 +45,13 @@ public class move : MonoBehaviour {
 
 	// in c vars
 	private bool inCMode = true;
-	private int partCounter = 0;
-	private int partRepeatCount = 0;
+	public int partCounter = 0;
 	private int numberOfParts = 53;
-	private int repeatMin = 5;
-	private int repeatMax = 5;
-	private int partRepeatMin = 0;
+
+	// artpop vars
+	private bool artpop = true;
+	public float timeBetweenJumps = 1f;
+	public float timeSinceJumped = 0f;
 
 	public string gameObjectId;
 
@@ -60,11 +61,11 @@ public class move : MonoBehaviour {
 	private OSCTransmitter oscTransmitter;
 
 	// Use this for initialization
-	void Start () {
-		//centerObject = gameObject.GetComponentInChildren<JellyMeshReferencePoint> ().gameObject;
-		//partRepeatMax = Random.Range(repeatMin, repeatMax);
+	IEnumerator Start () {
+		yield return new WaitForSeconds (1f);
 		oscTransmitter = new OSCTransmitter ("localhost", 3333);
-
+		changePart ();
+		timeSinceJumped = 0;
 	}
 
 //	void OnJellyCollisionEnter(JellyMesh.JellyCollision collision) {
@@ -97,26 +98,24 @@ public class move : MonoBehaviour {
 
 	public void changePart() {
 		//StartCoroutine (GetComponent<MidiControl> ().sendNote (partCounter, 100f));
-		GetComponent<MidiControl> ().sendClipLaunch (partCounter);
+		int part = partCounter % numberOfParts;
+		GetComponent<MidiControl> ().sendClipLaunch (part);
 		// send messages to player
 		OSCMessage message = new OSCMessage ("bounce", gameObjectId);
 		oscTransmitter.Send (message);
-		OSCMessage message2 = new OSCMessage("partNumber", (partCounter % numberOfParts) + "|" + gameObjectId);
+		OSCMessage message2 = new OSCMessage("partNumber", part + "|" + gameObjectId);
+		Debug.Log ("partNumber: " + part); 
 		oscTransmitter.Send(message2);
 		// reset jump flag
 		jumped = false;
-		// check if need to increment part
-		if (partRepeatCount < partRepeatMin) {
-			partRepeatCount++;
-		} else {
-			partCounter++;
-			partRepeatCount = 0;
-			//partRepeatMin = Random.Range (repeatMin, repeatMax);
-		}
+		// increment part
+		partCounter++;
 	}
 
 	// Update is called once per frame
 	void LateUpdate () {
+		timeSinceJumped += Time.deltaTime;
+
 		timeSinceDisconnected += Time.deltaTime;
 		if (timeSinceDisconnected > timeToLive) {
 			Debug.Log ("go away");
@@ -157,6 +156,11 @@ public class move : MonoBehaviour {
 //				Debug.Log (force);
 				m_JellyMesh.AddForce(force, m_CentralPointOnly);
 				m_JellyMesh.AddTorque(torqueVector * UnityEngine.Random.Range(m_MinTorqueForce, m_MaxTorqueForce), false);
+
+				if (artpop && timeSinceJumped > timeBetweenJumps) {
+					changePart();
+					timeSinceJumped = 0f;
+				}
 				timeSinceDisconnected = 0f;
 			}
 			//					shapeToScale.GetComponent<MidiControl>().sendCC(v.sqrMagnitude);

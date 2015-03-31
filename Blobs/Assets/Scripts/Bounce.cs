@@ -24,14 +24,10 @@ public class Bounce : MonoBehaviour
 //		bounce ();
 //	}
 	void OnTriggerEnter(Collider collider) {
-		parent = collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<JellyMesh>();
-//		centerObject = parent.centerObject;
-//		wrapperObject = parent.wrapperObject;
-//		centerObject.rigidbody.useGravity = false;
-//		centerObject.rigidbody.isKinematic = true;
-//		targetPosition = target.transform.position;
-		collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<move>().changePart ();
-		bounce ();
+//		parent = collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<JellyMesh>();
+
+//		collider.gameObject.GetComponent<JellyMeshReferencePoint> ().ParentJellyMesh.GetComponent<move>().changePart ();
+//		bounce ();
 	}
 
 	void bounce() {

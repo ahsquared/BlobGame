@@ -14,7 +14,7 @@ public class UnityOSCListener : MonoBehaviour  {
 	public float radius = 4f;
 	public float angle = Mathf.PI / 6; //30f;
 	private bool init = false;
-	public int shapeCounter = -1;
+	public int shapeCounter = 0;
 
 	Helpers helpers;
 
@@ -81,7 +81,7 @@ public class UnityOSCListener : MonoBehaviour  {
 		}
 
 		if (address.Contains ("create")) {
-			shapeCounter++;
+
 			if (shapeCounter == 16) {
 				return;
 			}
@@ -95,7 +95,9 @@ public class UnityOSCListener : MonoBehaviour  {
 			//Debug.Log ("shapeCount: " + shapeCount);
 			newShape = (GameObject) Instantiate(shapes[0], initPos, Quaternion.identity);
 			newShape.name = id;
-			newShape.GetComponent<move>().gameObjectId = id;
+			move moveComponent = newShape.GetComponent<move>();
+			MidiControl midicontrolComponent = newShape.GetComponent<MidiControl>();
+			moveComponent.gameObjectId = id;
 			//newShape.GetComponent<MidiControl>().controlNumber = shapeCounter + 1;
 			int trackNumber = 0;
 			for (int i = 0; i < availableTracks.Length; i++) {
@@ -106,16 +108,15 @@ public class UnityOSCListener : MonoBehaviour  {
 				}
 			}
 
-			newShape.GetComponent<MidiControl>().trackNumber = trackNumber; //shapeCounter + 1;
-			newShape.GetComponent<move>().initPos = initPos;
-
+			midicontrolComponent.trackNumber = trackNumber; //shapeCounter + 1;
+			moveComponent.initPos = initPos;
 			bounds.Encapsulate(newShape.transform.position);
 			init = true;
 
 			// let the client know their player number
 			OSCMessage playerNumberMessage = new OSCMessage("playerNumber", shapeCounter + "|" + id);
 			transmitter.Send(playerNumberMessage);
-
+			shapeCounter++;
 		}
 		if (address.Contains ("color") && objectExists) {
 			string[] colorVals = address.Substring (7).Split ('|');

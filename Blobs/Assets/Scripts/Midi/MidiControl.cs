@@ -7,7 +7,7 @@ public class MidiControl : MonoBehaviour
 	public int trackNumber = 1;
 	public int controlNumber = 1;
 	public float delay = 0.0f;
-	public float length = 0.1f;
+	public float length = 0.2f;
 	public float interval = 1.0f;
 	[Range(0f,1f)]
 	public float ccScale = 0.08f;
@@ -47,6 +47,13 @@ public class MidiControl : MonoBehaviour
 		MidiOut.SendControlChange(channel, 127, ((float) trackNumber) / 127f);
 		Debug.Log ("cc send stop" + ", trackNumber: " + trackNumber);;
 	}	
+	public void sendEffectChange(int effectNumber, float velocity) {
+		//Debug.Log ((trackNumber + 100 + effectNumber) + "," +  velocity);
+		MidiOut.SendControlChange(channel, (trackNumber * 3) + effectNumber + 97, velocity / 127f);
+//		MidiOut.SendNoteOn(channel, trackNumber + 100 + effectNumber, velocity / 127f);
+//		yield return new WaitForSeconds(length);
+//		MidiOut.SendNoteOff(channel, trackNumber + 100);
+	}
 	public void sendCC(float val) {
 		float adjustedVal = Mathf.Min (1, val * ccScale);
 		currentVal = (adjustedVal * kFilteringFactor) + (currentVal * (1.0f - kFilteringFactor));

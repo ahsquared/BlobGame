@@ -136,25 +136,31 @@ game = {
 			if (!init) {
 				return;
 			}
-
+			
+			var netAcceleration = game.getAccelerationWithoutGravity(o);
+			//socket.emit('message', '/rot ' + o.alpha + "|" + o.beta + "|" + o.gamma + "|" + socket.socket.sessionid);
+			
+			socket.emit('message', '/acc ' + netAcceleration.x + "|" +
+				netAcceleration.y + "|" + netAcceleration.z + "|" +
+				socket.socket.sessionid);
+			
 			var adjustedRotation = {
 				alpha: o.alpha - game.initOrientation.alpha,
 				beta: o.beta - game.initOrientation.beta,
 				gamma: o.gamma - game.initOrientation.gamma
 			};
-
-			var netAcceleration = game.getAccelerationWithoutGravity(o);
-			//socket.emit('message', '/rot ' + o.alpha + "|" + o.beta + "|" + o.gamma + "|" + socket.socket.sessionid);
-			socket.emit('message', '/rot ' + adjustedRotation.alpha + "|" +
-				adjustedRotation.beta + "|" + adjustedRotation.gamma + "|" +
-				socket.socket.sessionid);
-			socket.emit('message', '/acc ' + netAcceleration.x + "|" +
-				netAcceleration.y + "|" + netAcceleration.z + "|" +
-				socket.socket.sessionid);
-
+			adjustedRotation.alpha = (adjustedRotation.alpha < 0) ? (360 - Math.abs(adjustedRotation.alpha)) : adjustedRotation.alpha;
+			adjustedRotation.beta = (adjustedRotation.beta < 0) ? (180 - Math.abs(adjustedRotation.beta)) : adjustedRotation.beta;
+			adjustedRotation.gamma = (adjustedRotation.gamma < 0) ? (90 - Math.abs(adjustedRotation.gamma)) : adjustedRotation.gamma;
+			
 			var smoothRotation = game.getSmoothRotation(adjustedRotation.alpha, adjustedRotation.beta, adjustedRotation.gamma);
-
-
+			socket.emit('message', '/rot ' + smoothRotation.alpha + "|" +
+				smoothRotation.beta + "|" + smoothRotation.gamma + "|" +
+				socket.socket.sessionid);
+			var rotationData = "a: " + smoothRotation.alpha + ", b: " + smoothRotation.beta + ", g: " + smoothRotation.gamma;
+			//document.getElementById('log').innerHTML = rotationData;
+			
+			
 			//polydanceparty.rotateShape(smoothRotation, accel);
 			//polydanceparty.rotateShape(smoothRotation, shape);
 
@@ -226,7 +232,7 @@ game = {
 		gamma: 0
 	},
 	accFilteringFactor: 0.1,
-	rotFilteringFactor: 0.1,
+	rotFilteringFactor: 0.3,
 	setStyle: (function () {
 		var cachedStyles = {};
 		return function (styleName, styleValue, elem) {

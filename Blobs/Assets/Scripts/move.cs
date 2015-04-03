@@ -168,6 +168,22 @@ public class move : MonoBehaviour {
 			//cubeToScale.transform.GetComponentInChildren<Light>().light.range = 3 * (x + y + z);
 		}
 	}
+
+	public void rotate(float alpha, float beta, float gamma) {
+		timeSinceDisconnected = 0f;
+		GetComponent<MidiControl> ().sendEffectChange (0, Map(0f, 127f, 0f, 360f, alpha));
+		GetComponent<MidiControl> ().sendEffectChange (1, Map(0f, 127f, 0f, 180f, beta));
+		GetComponent<MidiControl> ().sendEffectChange (2, Map(0f, 127f, 0f, 90f, gamma));
+	}
+	public float Map(float from, float to, float from2, float to2, float value){
+		if(value <= from2){
+			return from;
+		}else if(value >= to2){
+			return to;
+		}else{
+			return (to - from) * ((value - from2) / (to2 - from2)) + from;
+		}
+	}
 //	public void jump(Vector3 v) {
 //		if (gameObject) {
 //			Vector3 force = new Vector3(v.z, -v.y, v.x);

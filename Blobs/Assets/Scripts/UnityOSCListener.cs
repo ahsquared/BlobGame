@@ -47,21 +47,23 @@ public class UnityOSCListener : MonoBehaviour  {
 
 		if (address.Contains ("rot") && init && objectExists) {
 			//Debug.Log (address);
-//			string[] rotVals = address.Substring (4).Split ('|');
-//			if (rotVals[0].IndexOf("null") == -1) {
-//				float alpha = float.Parse (rotVals [0]);
-//				float beta = float.Parse (rotVals [1]);
-//				float gamma = float.Parse (rotVals [2]);
-//				string rotId = rotVals[3];
-//				rotation = Quaternion.Euler (beta, gamma, alpha);
-//				//rotation = new Quaternion (x, y, z, w);
-//				GameObject shapeToRotate = GameObject.Find (rotId);
-//				//hand.transform.Translate (x/factor, y/factor, z/factor, null);
+			string[] rotVals = address.Substring (4).Split ('|');
+			if (rotVals[0].IndexOf("null") == -1) {
+				float alpha = float.Parse (rotVals [0]);
+				float beta = float.Parse (rotVals [1]);
+				float gamma = float.Parse (rotVals [2]);
+				string rotId = rotVals[3];
+
+				targetGameObject.GetComponent<move>().rotate(alpha, beta, gamma);
+				//rotation = Quaternion.Euler (beta, gamma, alpha);
+				//rotation = new Quaternion (x, y, z, w);
+				//GameObject shapeToRotate = GameObject.Find (rotId);
+				//hand.transform.Translate (x/factor, y/factor, z/factor, null);
 //				if (shapeToRotate) {
 //					Debug.Log (rotation);
 //					shapeToRotate.transform.rotation = rotation;
 //				}
-//			}
+			}
 		}
 		if (address.Contains ("acc") && init && objectExists) {
 			string[] accVals = address.Substring (4).Split ('|');
